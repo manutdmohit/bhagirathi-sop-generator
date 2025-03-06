@@ -1,5 +1,5 @@
 // app/api/generate-sop/route.js
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
@@ -7,7 +7,7 @@ const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_DEEPSEEK_API_KEY,
 });
 
-export async function POST(request) {
+export async function POST(request: NextRequest) {
   const { name, program, background, goals } = await request.json();
 
   try {

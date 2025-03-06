@@ -3,22 +3,31 @@
 import { useState } from 'react';
 import axios from 'axios';
 
+interface FormData {
+  name: string;
+  program: string;
+  background: string;
+  goals: string;
+}
+
 export default function Home() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     program: '',
     background: '',
     goals: '',
   });
-  const [sop, setSop] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [sop, setSop] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleChange = (e) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
@@ -35,7 +44,7 @@ export default function Home() {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(sop);
-    alert('SOP copied to clipboard!');
+    alert('SOP copied to clipboard');
   };
 
   const handleDownload = () => {
@@ -43,7 +52,7 @@ export default function Home() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'SOP.docx';
+    a.download = 'Statement_of_Purpose.doc';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -51,27 +60,29 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-50 to-blue-100 flex flex-col items-center justify-center p-4">
-      <h1 className="text-3xl font-bold text-blue-800 mb-6">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
+      <h1 className="text-2xl font-bold mb-6">
         Statement of Purpose Generator
       </h1>
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md"
+        className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md space-y-4"
       >
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-1">Name:</label>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Name:
+          </label>
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
             required
-            className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-1">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
             Program:
           </label>
           <input
@@ -80,11 +91,11 @@ export default function Home() {
             value={formData.program}
             onChange={handleChange}
             required
-            className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-1">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
             Background:
           </label>
           <textarea
@@ -92,44 +103,44 @@ export default function Home() {
             value={formData.background}
             onChange={handleChange}
             required
-            className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-1">Goals:</label>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Goals:
+          </label>
           <textarea
             name="goals"
             value={formData.goals}
             onChange={handleChange}
             required
-            className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           />
         </div>
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded-xl font-bold hover:bg-blue-700 transition disabled:bg-blue-300"
+          className="w-full py-2 px-4 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 disabled:opacity-50"
         >
           {loading ? 'Generating...' : 'Generate SOP'}
         </button>
       </form>
 
       {sop && (
-        <div className="bg-white shadow-lg rounded-2xl p-4 mt-6 w-full max-w-md">
-          <h2 className="text-xl font-bold text-blue-800 mb-2">
-            Generated SOP:
-          </h2>
-          <p className="text-gray-700 whitespace-pre-line mb-4">{sop}</p>
-          <div className="flex space-x-4">
+        <div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md mt-6">
+          <h2 className="text-xl font-semibold mb-4">Generated SOP:</h2>
+          <p className="whitespace-pre-wrap text-gray-700">{sop}</p>
+          <div className="flex justify-end space-x-2 mt-4">
             <button
               onClick={handleCopy}
-              className="bg-green-600 text-white py-2 px-4 rounded-xl font-bold hover:bg-green-700 transition"
+              className="py-2 px-4 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600"
             >
               Copy SOP
             </button>
             <button
               onClick={handleDownload}
-              className="bg-purple-600 text-white py-2 px-4 rounded-xl font-bold hover:bg-purple-700 transition"
+              className="py-2 px-4 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-600"
             >
               Download SOP
             </button>
