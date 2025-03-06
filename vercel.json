@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/generate-sop.ts": {
+    "api/generate-sop/route.ts": {
       "maxDuration": 60
     }
   }
