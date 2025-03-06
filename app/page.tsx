@@ -52,7 +52,7 @@ export default function Home() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'Statement_of_Purpose.doc';
+    a.download = 'Statement_of_Purpose.docx';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
